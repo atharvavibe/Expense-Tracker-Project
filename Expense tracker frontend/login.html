@@ -1,0 +1,74 @@
+<!-- <html>
+<head>
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.1/css/fontawesome.min.css">
+    <script src="https://kit.fontawesome.com/b5b7c6b9e8.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js" defer></script>
+    <script src="login.js" defer></script>
+</head>
+
+<body>
+<form onsubmit="login(event)" class="form">
+    <i class="fa-solid fa-user fa-3x" id="usericon"></i>
+   <div class="input">
+       <span><i class="fa-solid fa-envelope"></i></span>
+       <input type="email" id="email" name="email" placeholder="Email id" required>
+   </div>
+   <div class="input">
+       <span><i class="fa-solid fa-lock"></i></span>
+       <input type="password" id="password" name="password" placeholder="password" required>
+   </div>
+   <div class="btn"><button type="submit" class="loginBtn"><i class="fa-solid fa-right-to-bracket"></i> Login</button></div>
+   <a href="signup.html">Not a user? Sign up</a>
+</form>
+
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Expense Tracker Login</title>
+	<link rel="stylesheet" type="text/css" href="main.css">
+	<link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet">
+	<script src="https://kit.fontawesome.com/a81368914c.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://unpkg.com/axios/dist/axios.min.js" defer></script>
+    <script src="login.js" defer></script>
+</head>
+<body>
+	<img class="wave" src="/image/wave.png">
+	<div class="container">
+		<div class="img">
+			<img src="/image/money.svg">
+		</div>
+		<div class="login-content">
+			<form onsubmit="login(event)">
+				<img src="/image/avatar.svg">
+				<h2 class="title">Welcome</h2>
+           		<div class="input-div one">
+           		   <div class="i">
+           		   		<i class="fas fa-user"></i>
+           		   </div>
+           		   <div class="div">
+           		   		<!-- <h5>Username</h5> -->
+           		   		<input type="text" class="input" name="email" placeholder="Email Id">
+           		   </div>
+           		</div>
+           		<div class="input-div pass">
+           		   <div class="i"> 
+           		    	<i class="fas fa-lock"></i>
+           		   </div>
+           		   <div class="div">
+           		    	<!-- <h5>Password</h5> -->
+           		    	<input type="password" class="input" name="password" placeholder="Password"> 
+            	   </div>
+            	</div>
+            	<a href="#">Forgot Password?</a>
+            	<input type="submit" class="btn" value="Login">
+                <a href="signup.html">Not Registered yet? Sign Up</a>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
