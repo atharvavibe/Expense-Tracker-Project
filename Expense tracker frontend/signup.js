@@ -14,7 +14,7 @@ async function signup(e){
             window.location.href = "login.html"
         }
         else{
-            console.log('Login failed')
+            console.log('Error loading')
         }
     }catch(err){
         document.body.innerHTML += `<div style="color:red;">${err}</div>`

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker</title>
+    <link rel="stylesheet" href="/views/css/expense.css">
+    <script src="https://unpkg.com/axios/dist/axios.min.js" defer></script>
+    <script src="/expense.js" defer></script>
+</head>
+<body>
+    <h2>Expense Tracker</h2>
+    <div class="container">
+        <h4>Your Balance</h4>
+        <h1 id="balance">$0.00</h1>
+        <div class="inc-expense-container">
+            <div>
+            <h4>Income</h4>
+            <p id="money-plus" class="money-plus">+$0.00</p>
+            </div>
+            <div>
+                <h4>Expense</h4>
+                <p id="money-minus" class="money-minus">-$0.00</p>
+            </div>
+        </div>
+        <h3>History</h3>
+        <ul id="list" class="list">
+            <!-- <li class="minus">
+                Cash <span>-$400</span><button class="delete-btn">x</button>
+            </li> -->
+        </ul>
+        <h3>Add New Transaction</h3>
+        <form id="form" onsubmit="sendDataTobackend(event)">
+            <div class="form-control">
+                <label for="text">Transaction</label>
+                <input type="text" id="description" name="description" placeholder="Enter Transaction.."> 
+            </div>
+            <form id="form">
+                <div class="form-control">
+                    <label for="amount">Amount</label>
+                    <input type="number" id="expense" name="expense" placeholder="Amount"> 
+                </div>
+                <button class="btn">Add Transactions</button>
+        </form>
+    </div>
+</body>
+</html>

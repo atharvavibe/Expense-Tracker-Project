@@ -7,12 +7,8 @@
         }
         console.log(userLogindetails)
         const response = await axios.post('http://localhost:3000/user/login', userLogindetails)
-        if(response.status === 201){
-            console.log('Successful')
-        }
-        else{
-            console.log('Login failed')
-        }
+        alert(response.data.message)
+        window.location.href = "/views/expense.html"
     }catch(err){
         console.log(err)
     }
