@@ -8,7 +8,7 @@ exports.addExpense = async(req, res) => {
         if(expense == undefined || expense.length === 0){
             return res.status(400).json({err: "Bad paramenters....something is missing"})
         }
-        Expense.create({expense, description}).then(() => {
+        Expense.create({expense, description, userId: req.user.id}).then(() => {
             res.status(201).json({message : 'Sucessfully added the expense'})
         })
     }catch(err){
@@ -17,7 +17,7 @@ exports.addExpense = async(req, res) => {
 }
 
 exports.getExpense = async(req, res) => {
-    Expense.findAll().then(expenses => {
+    Expense.findAll({ where: {userId: req.user.id}}).then(expenses => {
         return res.status(200).json({expenses, success: true})
     })
     .catch(err => {
@@ -28,7 +28,7 @@ exports.getExpense = async(req, res) => {
 exports.deleteExpense = async(req, res) => {
     const expenseid = req.params.id
     console.log(expenseid)
-    Expense.destroy({where: {id: expenseid}}).then(() => {
+    Expense.destroy({where: {id: expenseid, userId: req.user.id}}).then(() => {
         return res.status(200).json({success: true, message: "Deleted successfully"})
     }).catch(err => {
         console.log(err)

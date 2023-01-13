@@ -8,14 +8,18 @@ const expense = document.getElementById('expense')
 
 let transactions = []
 
+
+
 // Add transaction
  function addTransaction(e){
     e.preventDefault()
     if(description.value.trim() ==="" || expense.value.trim() === ""){
         alert("Please Enter Text and Value")
     }else{
+        // window.addEventListener('DOMContentLoaded', () => {console.log(loaded)});
+        // var id = transactions.filter((item) => item.id)
         const transaction = {
-            id: id.value,
+            id:id.value,
             description: description.value,
             expense: +expense.value
         }
@@ -24,16 +28,20 @@ let transactions = []
         updateValues()
         description.value = ""
         expense.value = ""
+        console.log(transactions)
+
     }
 }
 
-// Generate id 
+//Generate Random ID
 // function generateID(){
-//     return Math.floor(Math.random()*100000000)
-// }
+//     const id = 0
+//     return id++
+//   }
 
 window.addEventListener('DOMContentLoaded', () => {
-    axios.get('http://localhost:3000/expense/get-expense').then(response => {
+    const token = localStorage.getItem('token')
+    axios.get('http://localhost:3000/expense/get-expense', { headers: {"Authorization": token}}).then(response => {
         console.log(response.data.expenses)
         console.log(transactions)
         response.data.expenses.forEach(expense => {
@@ -53,13 +61,14 @@ function addTransactionDOM(transaction){
     )
 
     item.innerHTML = `${transaction.description}<span>${sign}$${Math.abs(transaction.expense)}</span>
-    <button class="delete-btn onclick="removeTransaction(${transaction.id})">x</button>`
+    <button class="delete-btn" onclick="removeTransaction(${transaction.id})">x</button>`
 
     list.appendChild(item)
 }
 
 // Remove transaction
 function removeTransaction(id){
+    console.log('click')
     axios.delete(`http://localhost:3000/expense/delete-expense/${id}`).then(response => {
     transactions = transactions.filter((transaction) => transaction.id !== id)
     Init()

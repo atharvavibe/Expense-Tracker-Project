@@ -24,6 +24,8 @@ app.use(cors())
 app.use('/user', userCredentialsStatus)
 app.use('/expense', expenseRoutes)
 
+user.hasMany(expense)
+expense.belongsTo(user)
 
 sequelize.sync().then(result => {
     app.listen(3000)
