@@ -8,8 +8,9 @@ exports.addExpense = async(req, res) => {
         if(expense == undefined || expense.length === 0){
             return res.status(400).json({err: "Bad paramenters....something is missing"})
         }
-        Expense.create({expense, description, userId: req.user.id}).then(() => {
-            res.status(201).json({message : 'Sucessfully added the expense'})
+        console.log(req.user)
+        Expense.create({expense, description , userId: req.user.id}).then((expenses) => {
+            res.status(201).json({expenses, message : 'Sucessfully added the expense'})
         })
     }catch(err){
         console.log(err)
@@ -28,7 +29,10 @@ exports.getExpense = async(req, res) => {
 exports.deleteExpense = async(req, res) => {
     const expenseid = req.params.id
     console.log(expenseid)
-    Expense.destroy({where: {id: expenseid, userId: req.user.id}}).then(() => {
+Expense.destroy({where: {id: expenseid ,userId: req.user.id}}).then((noOfRows) => {
+        if(noOfRows === 0){
+            return res.status(404).json({success: false, message: "Expense does not belong to the user"})
+        }
         return res.status(200).json({success: true, message: "Deleted successfully"})
     }).catch(err => {
         console.log(err)

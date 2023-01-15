@@ -7,19 +7,17 @@ const description = document.getElementById('description')
 const expense = document.getElementById('expense')
 
 let transactions = []
-
+var id = 0
 
 
 // Add transaction
- function addTransaction(e){
+ function addTransaction(e, id){
     e.preventDefault()
     if(description.value.trim() ==="" || expense.value.trim() === ""){
         alert("Please Enter Text and Value")
     }else{
-        // window.addEventListener('DOMContentLoaded', () => {console.log(loaded)});
-        // var id = transactions.filter((item) => item.id)
         const transaction = {
-            id:id.value,
+            id:id++,
             description: description.value,
             expense: +expense.value
         }
@@ -33,15 +31,10 @@ let transactions = []
     }
 }
 
-//Generate Random ID
-// function generateID(){
-//     const id = 0
-//     return id++
-//   }
 
 window.addEventListener('DOMContentLoaded', () => {
     const token = localStorage.getItem('token')
-    axios.get('http://localhost:3000/expense/get-expense', { headers: {"Authorization": token}}).then(response => {
+    axios.get('http://localhost:3000/expense/get-expense' , { headers: {"Authorization": token}}).then(response => {
         console.log(response.data.expenses)
         console.log(transactions)
         response.data.expenses.forEach(expense => {
@@ -60,7 +53,7 @@ function addTransactionDOM(transaction){
         transaction.expense < 0 ? "minus" : "plus"
     )
 
-    item.innerHTML = `${transaction.description}<span>${sign}$${Math.abs(transaction.expense)}</span>
+    item.innerHTML = `${transaction.description}<span>${sign}₹${Math.abs(transaction.expense)}</span>
     <button class="delete-btn" onclick="removeTransaction(${transaction.id})">x</button>`
 
     list.appendChild(item)
@@ -69,12 +62,44 @@ function addTransactionDOM(transaction){
 // Remove transaction
 function removeTransaction(id){
     console.log('click')
-    axios.delete(`http://localhost:3000/expense/delete-expense/${id}`).then(response => {
+    const token = localStorage.getItem('token')
+    axios.delete(`http://localhost:3000/expense/delete-expense/${id}`, {headers: {"Authorization": token}}).then(response => {
     transactions = transactions.filter((transaction) => transaction.id !== id)
     Init()
   }).catch((err) => {
     console.log(err)
   })
+}
+
+document.getElementById('premiumBtn').onclick = async function (e){
+    const token = localStorage.getItem('token')
+    const response = await axios.get('http://localhost:3000/purchase/premium-membership', {headers: {"Authorization":token}})
+    console.log(response)
+    var options =
+    {
+        "key": response.data.key_id,
+        "order_id": response.data.order.id,
+        // This handler function is a callback function received form razorpay after successfull payment
+        "handler": async function(response){
+            await axios.post('http://localhost:3000/purchase/update-transaction-status',{
+                order_id: options.order_id,
+                payment_id: response.razorpay_payment_id
+            }, {headers: {"Authorization": token}})
+
+            alert('You are a Premium user now')
+
+        }
+    }
+
+    const rzp = new Razorpay(options)
+    rzp.open()
+    e.preventDefault()
+
+    rzp.on('payment.failed', function(response){
+        console.log(response)
+        alert('Something went wrong')
+    })
+
 }
 
 //Update values
@@ -86,9 +111,9 @@ function updateValues(){
         amounts.filter(item => item < 0).reduce((acc, item) => (acc += item), 0)* -1
     ).toFixed(2)
 
-    balance.innerText = `$${total}`
-    money_plus.innerText = `$${income}`
-    money_minus.innerText = `$${expense}`
+    balance.innerText = `₹${total}`
+    money_plus.innerText = `₹${income}`
+    money_minus.innerText = `₹${expense}`
 }
 
 //Init App
@@ -98,10 +123,8 @@ function Init(){
     updateValues()
 }
 
-Init()
-form.addEventListener("submit", addTransaction)
 
-async function sendDataTobackend(e){
+ function sendDataTobackend(e){
     e.preventDefault()
     try{
         const expenseDetails = {
@@ -109,7 +132,12 @@ async function sendDataTobackend(e){
             expense: e.target.expense.value
         }
         console.log(expenseDetails)
-        const response = await axios.post('http://localhost:3000/expense/add-expense', expenseDetails)
+        const token = localStorage.getItem('token')
+        axios.post('http://localhost:3000/expense/add-expense',expenseDetails,  {headers: {"Authorization": token}}).then(response => {
+            console.log(response.data.expenses.id)
+            Init()
+            addTransaction(e,response.data.expenses.id )
+        })
     }catch(err){
         console.log(err)
     }
