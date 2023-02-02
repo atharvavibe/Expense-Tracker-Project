@@ -32,8 +32,8 @@ exports.signup = async(req, res) => {
 
 }
 
-function generateAccessToken(id, username){
-    return jwt.sign({ userId: id, username: username}, 'secretkey')
+const generateAccessToken = (id, username, ispremiumuser) => {
+    return jwt.sign({ userId: id, username: username, ispremiumuser}, 'secretkey')
 }
 
 exports.login = async(req, res) => {
@@ -48,7 +48,7 @@ exports.login = async(req, res) => {
            if(user.length > 0){
             bcrypt.compare(password, user[0].password, (err, result) => {
                 if(result === true){
-                res.status(201).json({success: true, message: "User logged in successfully" ,token: generateAccessToken(user[0].id, user[0].username)})
+                res.status(201).json({success: true, message: "User logged in successfully" ,token: generateAccessToken(user[0].id, user[0].username, user[0].ispremiumuser)})
             }else{
                 return res.status(400).json({success: false, message: "password incorrect"})
             }  
@@ -62,3 +62,5 @@ exports.login = async(req, res) => {
         console.log(err)
     }
 }
+
+exports.generateAccessToken = generateAccessToken

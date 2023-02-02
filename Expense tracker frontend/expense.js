@@ -31,9 +31,25 @@ var id = 0
     }
 }
 
+function parseJwt (token) {
+    var base64Url = token.split('.')[1];
+    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+
+    return JSON.parse(jsonPayload);
+}
 
 window.addEventListener('DOMContentLoaded', () => {
     const token = localStorage.getItem('token')
+    const decodedToken = parseJwt(token)
+    console.log(decodedToken)
+    const isAdmin = decodedToken.ispremiumuser
+    if(isAdmin){
+        showPremiumUserMessage()
+        showLeaderBoard()
+    }
     axios.get('http://localhost:3000/expense/get-expense' , { headers: {"Authorization": token}}).then(response => {
         console.log(response.data.expenses)
         console.log(transactions)
@@ -45,6 +61,11 @@ window.addEventListener('DOMContentLoaded', () => {
     })
 })
 
+
+function showPremiumUserMessage(){
+    document.getElementById('premiumBtn').style.visibility = "hidden"
+    document.getElementById('message').innerHTML = "Premium"
+}
 
 function addTransactionDOM(transaction){
     const sign = transaction.expense < 0 ? "-" : "+"
@@ -72,6 +93,7 @@ function removeTransaction(id){
 }
 
 document.getElementById('premiumBtn').onclick = async function (e){
+    console.log('click')
     const token = localStorage.getItem('token')
     const response = await axios.get('http://localhost:3000/purchase/premium-membership', {headers: {"Authorization":token}})
     console.log(response)
@@ -87,7 +109,10 @@ document.getElementById('premiumBtn').onclick = async function (e){
             }, {headers: {"Authorization": token}})
 
             alert('You are a Premium user now')
-
+            showPremiumUserMessage()
+            localStorage.setItem('isAdmin', true)
+            localStorage.setItem('token', res.data.token)
+            showLeaderBoard()
         }
     }
 
@@ -100,6 +125,24 @@ document.getElementById('premiumBtn').onclick = async function (e){
         alert('Something went wrong')
     })
 
+}
+
+function showLeaderBoard(){
+    const inputElement = document.createElement("input")
+    inputElement.type = "button"
+    inputElement.value = 'show Leaderboard'
+    inputElement.onclick = async() => {
+        const token = localStorage.getItem('token')
+        const userLeaderBoardArray = await axios.get('http://localhost:3000/premium/showleaderboard',{headers: {"Authorization":token}})
+        console.log(userLeaderBoardArray)
+
+        var leaderboardElem = document.getElementById('leaderboard')
+        leaderboardElem.innerHTML += '<h1> Leader Board </h1>'
+        userLeaderBoardArray.data.forEach((userDetails) => {
+            leaderboardElem.innerHTML += `<li>Name - ${userDetails.name} Total Expense - ${userDetails.total_cost}`
+        })
+    }
+    document.getElementById('message').appendChild(inputElement)
 }
 
 //Update values
