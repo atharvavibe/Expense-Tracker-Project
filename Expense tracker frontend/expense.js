@@ -139,7 +139,7 @@ function showLeaderBoard(){
         var leaderboardElem = document.getElementById('leaderboard')
         leaderboardElem.innerHTML += '<h1> Leader Board </h1>'
         userLeaderBoardArray.data.forEach((userDetails) => {
-            leaderboardElem.innerHTML += `<li>Name - ${userDetails.name} Total Expense - ${userDetails.total_cost}`
+            leaderboardElem.innerHTML += `<li>Name - ${userDetails.username} Total Expense - ${userDetails.total_cost}`
         })
     }
     document.getElementById('message').appendChild(inputElement)

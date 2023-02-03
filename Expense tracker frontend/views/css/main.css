@@ -187,6 +187,9 @@ a:hover{
 	background-position: right;
 }
 
+h3{
+	font-size: large;
+}
 
 @media screen and (max-width: 1050px){
 	.container{
