@@ -20,7 +20,6 @@ exports.signup = async(req, res) => {
                 return res.status(400).json({err: "Bad paramenters....something is missing"})
             }
             bcrypt.hash(password, 10, async (err, hash) => {
-                // console.log(err)
                 User.create({username, email, password : hash}).then(() => {
                 res.status(201).json({message: 'Successfully created a new user'})
             })
