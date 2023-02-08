@@ -64,7 +64,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 function showPremiumUserMessage(){
     document.getElementById('premiumBtn').style.visibility = "hidden"
-    document.getElementById('message').innerHTML = "Premium"
+    document.getElementById('message').innerHTML = 'Premium'
 }
 
 function addTransactionDOM(transaction){
@@ -93,7 +93,6 @@ function removeTransaction(id){
 }
 
 document.getElementById('premiumBtn').onclick = async function (e){
-    console.log('click')
     const token = localStorage.getItem('token')
     const response = await axios.get('http://localhost:3000/purchase/premium-membership', {headers: {"Authorization":token}})
     console.log(response)
@@ -103,7 +102,7 @@ document.getElementById('premiumBtn').onclick = async function (e){
         "order_id": response.data.order.id,
         // This handler function is a callback function received form razorpay after successfull payment
         "handler": async function(response){
-            await axios.post('http://localhost:3000/purchase/update-transaction-status',{
+           const res = await axios.post('http://localhost:3000/purchase/update-transaction-status',{
                 order_id: options.order_id,
                 payment_id: response.razorpay_payment_id
             }, {headers: {"Authorization": token}})
@@ -130,7 +129,8 @@ document.getElementById('premiumBtn').onclick = async function (e){
 function showLeaderBoard(){
     const inputElement = document.createElement("input")
     inputElement.type = "button"
-    inputElement.value = 'show Leaderboard'
+    inputElement.value = 'Show Leaderboard'
+    inputElement.classList = 'btn'
     inputElement.onclick = async() => {
         const token = localStorage.getItem('token')
         const userLeaderBoardArray = await axios.get('http://localhost:3000/premium/showleaderboard',{headers: {"Authorization":token}})
@@ -139,7 +139,7 @@ function showLeaderBoard(){
         var leaderboardElem = document.getElementById('leaderboard')
         leaderboardElem.innerHTML += '<h1> Leader Board </h1>'
         userLeaderBoardArray.data.forEach((userDetails) => {
-            leaderboardElem.innerHTML += `<li>Name - ${userDetails.username} Total Expense - ${userDetails.total_cost}`
+            leaderboardElem.innerHTML += `<li>${userDetails.username}: ₹${userDetails.total_cost}`
         })
     }
     document.getElementById('message').appendChild(inputElement)
@@ -185,4 +185,3 @@ function Init(){
         console.log(err)
     }
 }
-

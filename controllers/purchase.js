@@ -5,8 +5,8 @@ const userController = require('./user')
 exports.purchasepremium = async (req, res) => {
     try{
         var rzp = new Razorpay({
-            key_id: /*process.env.RAZORPAY_KEY_ID*/'rzp_test_A2okxtwZMQhIhj',
-            key_secret: /*process.env.RAZORPAY_KEY_SECRET*/'lQa2rfoeXzEZC8fxZxljDf75'
+            key_id: process.env.RAZORPAY_KEY_ID,
+            key_secret: process.env.RAZORPAY_KEY_SECRET
         })
         const amount = 10000
         rzp.orders.create({amount, currency: "INR"}, (err, order) => {

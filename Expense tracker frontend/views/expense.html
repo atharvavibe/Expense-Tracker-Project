@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Expense Tracker</title>
     <link rel="stylesheet" href="/views/css/expense.css">
+    <script src="https://kit.fontawesome.com/a81368914c.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js" defer></script>
     <script src="/expense.js" defer></script>
 </head>
@@ -17,6 +18,7 @@
       <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     </div>
     <div class="container">
+        <div>
         <h4>Your Balance</h4>
         <h1 id="balance">₹0.00</h1>
         <div class="inc-expense-container">
@@ -49,9 +51,10 @@
                 </div>
                 <button class="btn">Add Transactions</button>
         </form>
-    </div>
-    <div id="leaderboard" class="leaderboard">
+        <div id="leaderboard" class="leaderboard">
 
+        </div>
+      </div>
     </div>
 </body>
 </html>

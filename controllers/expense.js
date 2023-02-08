@@ -8,7 +8,7 @@ exports.addExpense = async(req, res) => {
         if(expense == undefined || expense.length === 0){
             return res.status(400).json({err: "Bad paramenters....something is missing"})
         }
-        console.log(req.user)
+        // console.log(req.user)
         Expense.create({expense, description , userId: req.user.id}).then((expenses) => {
             res.status(201).json({expenses, message : 'Sucessfully added the expense'})
         })
