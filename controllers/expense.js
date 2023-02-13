@@ -1,6 +1,8 @@
 const Expense = require('../model/expense')
+const User = require('../model/user')
+const s3services = require('../services/s3services')
 
-
+const AWS = require('aws-sdk')
 
 exports.addExpense = async(req, res) => {
     try{
@@ -19,6 +21,7 @@ exports.addExpense = async(req, res) => {
 
 exports.getExpense = async(req, res) => {
     Expense.findAll({ where: {userId: req.user.id}}).then(expenses => {
+        // console.log(expenses)
         return res.status(200).json({expenses, success: true})
     })
     .catch(err => {
@@ -38,4 +41,22 @@ Expense.destroy({where: {id: expenseid ,userId: req.user.id}}).then((noOfRows) =
         console.log(err)
         return res.status(403).json({sucess: false, message:"Failed"})
     })
+}
+
+
+
+exports.downloadExpense = async (req, res) => {
+    try{
+    Expense.findAll({ where: {userId: req.user.id}}).then( async expenses => {
+    
+    const userId = req.user.id 
+    const stringyfiedExpense = JSON.stringify(expenses)
+    const filename = `Expense${userId}/${new Date()}.txt`
+    const fileURL = await s3services.uploadTos3(stringyfiedExpense, filename)
+    res.status(200).json({fileURL, success: true})
+     })
+     }catch(err) {
+        console.log(err)
+        res.status(500).json({fileURL: '', success: false, err: err})
+  }
 }

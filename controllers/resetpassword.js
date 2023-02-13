@@ -57,11 +57,12 @@ try
 
 exports.resetpassword = (req, res) => {
     const id = req.params.id
-    console.log(req.params)
+    // console.log(req.params)
     Forgotpassword.findOne({where: {id}}).then(forgotpasswordrequest => {
         console.log(forgotpasswordrequest)
         if(forgotpasswordrequest){
             forgotpasswordrequest.update({active: false})
+        
                 res.status(200).send(`<html>
                 <script>
                     function formsubmitted(e){

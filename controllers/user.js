@@ -32,7 +32,7 @@ exports.signup = async(req, res) => {
 }
 
 const generateAccessToken = (id, username, ispremiumuser) => {
-    return jwt.sign({ userId: id, username: username, ispremiumuser}, 'secretkey')
+    return jwt.sign({ userId: id, username: username, ispremiumuser}, process.env.TOKEN_SECRET_KEY)
 }
 
 exports.login = async(req, res) => {

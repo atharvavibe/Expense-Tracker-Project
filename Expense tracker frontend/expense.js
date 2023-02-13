@@ -1,3 +1,4 @@
+
 const balance = document.getElementById('balance')
 const money_plus = document.getElementById('money-plus')
 const money_minus = document.getElementById('money-minus')
@@ -5,10 +6,30 @@ const list = document.getElementById('list')
 const form = document.getElementById('form')
 const description = document.getElementById('description')
 const expense = document.getElementById('expense')
+const token = localStorage.getItem('token')
 
 let transactions = []
 var id = 0
 
+function download(){
+    const inputElement = document.createElement("input")
+    inputElement.type = "button"
+    inputElement.value = 'Download'
+    inputElement.classList = 'btn'
+    axios.get('http://localhost:3000/expense/download', {headers : {"Authorization": token}})
+    .then((response) => {
+        if(response.status === 201){
+            var a = document.createElement("a")
+            a.href = response.data.fileURL
+            a.download = 'myexpense.csv'
+            a.click()
+        }else{
+            throw new Error(response.data.message)
+        }
+    }).catch((err) => {
+        console.log(err)
+    })
+}
 
 // Add transaction
  function addTransaction(e, id){
@@ -49,6 +70,7 @@ window.addEventListener('DOMContentLoaded', () => {
     if(isAdmin){
         showPremiumUserMessage()
         showLeaderBoard()
+        
     }
     axios.get('http://localhost:3000/expense/get-expense' , { headers: {"Authorization": token}}).then(response => {
         console.log(response.data.expenses)
@@ -112,6 +134,7 @@ document.getElementById('premiumBtn').onclick = async function (e){
             localStorage.setItem('isAdmin', true)
             localStorage.setItem('token', res.data.token)
             showLeaderBoard()
+            
         }
     }
 
