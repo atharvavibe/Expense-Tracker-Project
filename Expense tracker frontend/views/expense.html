@@ -33,12 +33,6 @@
                 <p id="money-minus" class="money-minus">-₹0.00</p>
             </div>
         </div>
-        <h3>History</h3>
-        <ul id="list" class="list">
-            <!-- <li class="minus">
-                Cash <span>-$400</span><button class="delete-btn">x</button>
-            </li> -->
-        </ul>
         <h3>Add New Transaction</h3>
         <form id="form" onsubmit="sendDataTobackend(event)">
             <div class="form-control">
@@ -52,10 +46,19 @@
                 </div>
                 <button class="btn">Add Transactions</button>
         </form>
+        <h3>History</h3>
+        <ul id="list" class="list">
+            <!-- <li class="minus">
+                Cash <span>-$400</span><button class="delete-btn">x</button>
+            </li> -->
+        </ul>
+      
         <div id="leaderboard" class="leaderboard">
+
 
         </div>
       </div>
     </div>
+    <div id="pagination"></div>
 </body>
 </html>

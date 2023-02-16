@@ -4,6 +4,8 @@ const s3services = require('../services/s3services')
 
 const AWS = require('aws-sdk')
 
+const ITEMS_PER_PAGE = 4
+
 exports.addExpense = async(req, res) => {
     try{
         const{expense, description} = req.body
@@ -20,9 +22,25 @@ exports.addExpense = async(req, res) => {
 }
 
 exports.getExpense = async(req, res) => {
-    Expense.findAll({ where: {userId: req.user.id}}).then(expenses => {
+    const page = +req.query.page || 1
+    var totalItems
+    const total = await Expense.count()
+    totalItems = total
+    Expense.findAll({ where: {userId: req.user.id}}, {offset: (page - 1)*ITEMS_PER_PAGE, limit: ITEMS_PER_PAGE}).then(expenses => {
         // console.log(expenses)
-        return res.status(200).json({expenses, success: true})
+        // return res.status(200).json({expenses, success: true})
+        res.json({
+            allexpenses: expenses, 
+            pageData:{
+            currentPage: page,
+            limit: ITEMS_PER_PAGE,
+            hasNextPage: ITEMS_PER_PAGE * page < totalItems,
+            nextPage: +page + 1,
+            hasPreviousPage: page > 1,
+            previousPage: +page - 1,
+            lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE)
+            }
+        })
     })
     .catch(err => {
         return res.status(500).json({error: err, success: false})
@@ -47,16 +65,25 @@ Expense.destroy({where: {id: expenseid ,userId: req.user.id}}).then((noOfRows) =
 
 exports.downloadExpense = async (req, res) => {
     try{
-    Expense.findAll({ where: {userId: req.user.id}}).then( async expenses => {
+        if(!req.user.ispremiumuser){
+            return res.status(401).json({ success: false, message: 'User is not a premium User'})
+        }
     
-    const userId = req.user.id 
-    const stringyfiedExpense = JSON.stringify(expenses)
-    const filename = `Expense${userId}/${new Date()}.txt`
-    const fileURL = await s3services.uploadTos3(stringyfiedExpense, filename)
-    res.status(200).json({fileURL, success: true})
-     })
-     }catch(err) {
-        console.log(err)
-        res.status(500).json({fileURL: '', success: false, err: err})
-  }
+        try{
+        Expense.findAll({ where: {userId: req.user.id}}).then( async expenses => {
+        
+        const userId = req.user.id 
+        const stringyfiedExpense = JSON.stringify(expenses)
+        const filename = `Expense${userId}/${new Date()}.txt`
+        const fileURL = await s3services.uploadTos3(stringyfiedExpense, filename)
+        res.status(200).json({fileURL, success: true})
+        })
+        }catch(err) {
+            console.log(err)
+            res.status(500).json({fileURL: '', success: false, err: err})
+    }
+}
+    catch(err) {
+        console.log(err);
+    }
 }

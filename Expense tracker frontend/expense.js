@@ -6,10 +6,14 @@ const list = document.getElementById('list')
 const form = document.getElementById('form')
 const description = document.getElementById('description')
 const expense = document.getElementById('expense')
+const pagination = document.getElementById('pagination')
 const token = localStorage.getItem('token')
+
 
 let transactions = []
 var id = 0
+const limit = 4
+// var currentPage = 1
 
 function download(){
     const inputElement = document.createElement("input")
@@ -63,6 +67,8 @@ function parseJwt (token) {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
+    var page = 1
+    var currentPage = 1
     const token = localStorage.getItem('token')
     const decodedToken = parseJwt(token)
     console.log(decodedToken)
@@ -72,17 +78,61 @@ window.addEventListener('DOMContentLoaded', () => {
         showLeaderBoard()
         
     }
-    axios.get('http://localhost:3000/expense/get-expense' , { headers: {"Authorization": token}}).then(response => {
-        console.log(response.data.expenses)
-        console.log(transactions)
-        response.data.expenses.forEach(expense => {
-            addTransactionDOM(expense)
+    axios.get(`http://localhost:3000/expense/get-expense?page=${page}` , { headers: {"Authorization": token}})
+    .then(response => {
+        //console.log(response.data.pageData.currentPage)
+        showPagination(response.data.allexpenses, currentPage)
+        //console.log(transactions)
+        // let start = response.data.pageData.currentPage* response.data.pageData.limit
+        // let end = start + response.data.pageData.limit
+        // let paginatedItems = response.data.allexpenses.slice(start, end)
+        response.data.allexpenses.forEach(expense => {
             transactions.push(expense)
             updateValues()
         })
     })
 })
 
+function showPagination(allexpenses, currentPage){
+ 
+    currentPage--
+    list.innerHTML = ""
+    let start = limit * currentPage
+    let end = start + limit 
+    console.log(currentPage)
+    let paginatedItems = allexpenses.slice(start, end)
+    paginatedItems.forEach(amount => {
+        addTransactionDOM(amount)
+    })
+
+    setPagination(allexpenses, pagination, limit, currentPage)
+}
+
+function setPagination(allexpenses, wrapper, limit, currentPage){
+    wrapper.innerText = ""
+    var lastPage = Math.ceil(allexpenses.length / limit)
+    // console.log(lastPage)
+    for(var i = 1; i <= lastPage; i++){
+        var btn = paginationBtn(i, allexpenses, currentPage)
+        wrapper.appendChild(btn)
+    }
+}
+
+function paginationBtn(page, allexpenses, currentPage){
+    var button = document.createElement('button')
+    button.classList.add("pageNumber")
+    button.innerText = page
+
+    if(currentPage == page) button.classList.add('active')
+
+    button.addEventListener('click', function(){
+        currentPage = page
+        // console.log(currentPage)
+        showPagination(allexpenses, currentPage)
+    })
+    return button
+
+}
 
 function showPremiumUserMessage(){
     document.getElementById('premiumBtn').style.visibility = "hidden"
