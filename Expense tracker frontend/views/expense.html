@@ -14,13 +14,15 @@
     <div class="titleandBtnContainer">
       <h2>Expense Tracker</h2>
       <div id="message" class="message"></div>
-      <button class="premiumBtn" id="premiumBtn">Buy Premium</button>
-      <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-      <button onclick="download()" id="downloadexpense">Download File</button>
     </div>
+    <button class="premiumBtn" id="premiumBtn">Buy Premium</button>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <button onclick="download()" id="downloadexpense" class="downloadBtn">
+        <i class="fa fa-solid fa-download"></i></button>
     <div class="container">
-        <div>
-        <h4>Your Balance</h4>
+        <div class="balance-container">
+            <h2>YOUR BALANCE</h2>
+        </div>
         <h1 id="balance">₹0.00</h1>
         <div class="inc-expense-container">
 
@@ -33,7 +35,7 @@
                 <p id="money-minus" class="money-minus">-₹0.00</p>
             </div>
         </div>
-        <h3>Add New Transaction</h3>
+        <h2>Add New Transaction</h2>
         <form id="form" onsubmit="sendDataTobackend(event)">
             <div class="form-control">
                 <label for="text">Transaction</label>
@@ -46,7 +48,16 @@
                 </div>
                 <button class="btn">Add Transactions</button>
         </form>
-        <h3>History</h3>
+        <div class="dropdown">
+            <h3>History</h3>
+            <!-- <label class="rowsPerPage">Rows: </label>
+            <select class="rows" id="rows" onchange="this.form.submit()">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="40">40</option>
+            </select> -->
+        </div>
         <ul id="list" class="list">
             <!-- <li class="minus">
                 Cash <span>-$400</span><button class="delete-btn">x</button>
@@ -59,6 +70,6 @@
         </div>
       </div>
     </div>
-    <div id="pagination"></div>
+    <div id="pagination" class="pagination"></div>
 </body>
 </html>

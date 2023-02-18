@@ -30,10 +30,12 @@ h1{
     margin: 0;
 }
 
+
+
 h3{
-    border-bottom: 1px solid#bbb;
     padding-bottom: 10px;
     margin: 40px 0 10px;
+    padding-right: 12rem;
 }
 
 h4{
@@ -182,6 +184,72 @@ input[type ="text"],input[type="number"]{
 
 }
 
+.downloadBtn{
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #38d39f;
+  color: white;
+  font-size: 20px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
+
+.balance-container{
+    display: flex;
+}
+
+.dropdown{
+    display: flex;
+    margin-left: 0rem;
+    width: 350px;
+    border-bottom: 1px solid#bbb;
+}
+
+.rowsPerPage{
+    font-family: -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
+    "Open Sans", "Helvetica Neue", sans-serif;
+    padding-bottom: 10px;
+    margin: 40px 0 10px;
+    padding-right: 0.5rem;
+}
+
+.rows{
+    font-family: -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
+    "Open Sans", "Helvetica Neue", sans-serif;
+    padding-bottom: 10px;
+    margin: 40px 0 10px;
+    width: 40px;
+    height: 35px;
+    border: none;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
+
+.premiumBtn{
+    background-color: #38d39f;
+    border: none;
+    color: white;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 50px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+    font-family: -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
+    "Open Sans", "Helvetica Neue", sans-serif;
+}
+
 .titleandBtnContainer button:hover{
     background-color: #2ecc71;
 }
@@ -193,3 +261,24 @@ input[type ="text"],input[type="number"]{
     color: #00b058;
 }
 
+.pageNumber{
+    width: 35px;
+    height: 35px;
+    appearance: none;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    background-color: #38d39f;
+    margin: 5px;
+    transition: 0.4s;
+    color: #fff;
+    font-size: 18px;;
+    font-family: -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
+    "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+.pagination button:hover{
+    background-color: #eeee;
+    color: #38d39f;
+}

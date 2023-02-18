@@ -8,21 +8,25 @@ const description = document.getElementById('description')
 const expense = document.getElementById('expense')
 const pagination = document.getElementById('pagination')
 const token = localStorage.getItem('token')
+var numberOfRows = document.getElementById('rows')
+var rows = numberOfRows.options[numberOfRows.selectedIndex].value
 
 
 let transactions = []
+let currentPage = 1
 var id = 0
-const limit = 4
+const limit = rows
 // var currentPage = 1
 
 function download(){
     const inputElement = document.createElement("input")
     inputElement.type = "button"
     inputElement.value = 'Download'
-    inputElement.classList = 'btn'
+    inputElement.classList = 'downloadBtn'
     axios.get('http://localhost:3000/expense/download', {headers : {"Authorization": token}})
     .then((response) => {
-        if(response.status === 201){
+        console.log(response)
+        if(response.status === 200){
             var a = document.createElement("a")
             a.href = response.data.fileURL
             a.download = 'myexpense.csv'
@@ -51,7 +55,7 @@ function download(){
         updateValues()
         description.value = ""
         expense.value = ""
-        console.log(transactions)
+        //console.log(transactions)
 
     }
 }
@@ -67,6 +71,7 @@ function parseJwt (token) {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
+    console.log(rows)
     var page = 1
     var currentPage = 1
     const token = localStorage.getItem('token')
@@ -80,12 +85,7 @@ window.addEventListener('DOMContentLoaded', () => {
     }
     axios.get(`http://localhost:3000/expense/get-expense?page=${page}` , { headers: {"Authorization": token}})
     .then(response => {
-        //console.log(response.data.pageData.currentPage)
         showPagination(response.data.allexpenses, currentPage)
-        //console.log(transactions)
-        // let start = response.data.pageData.currentPage* response.data.pageData.limit
-        // let end = start + response.data.pageData.limit
-        // let paginatedItems = response.data.allexpenses.slice(start, end)
         response.data.allexpenses.forEach(expense => {
             transactions.push(expense)
             updateValues()
@@ -111,7 +111,6 @@ function showPagination(allexpenses, currentPage){
 function setPagination(allexpenses, wrapper, limit, currentPage){
     wrapper.innerText = ""
     var lastPage = Math.ceil(allexpenses.length / limit)
-    // console.log(lastPage)
     for(var i = 1; i <= lastPage; i++){
         var btn = paginationBtn(i, allexpenses, currentPage)
         wrapper.appendChild(btn)
@@ -248,11 +247,14 @@ function Init(){
             expense: e.target.expense.value
         }
         console.log(expenseDetails)
+        //showPagination(expenseDetails, currentPage)
         const token = localStorage.getItem('token')
         axios.post('http://localhost:3000/expense/add-expense',expenseDetails,  {headers: {"Authorization": token}}).then(response => {
-            console.log(response.data.expenses.id)
+            console.log(response.data.expenses)
             Init()
             addTransaction(e,response.data.expenses.id )
+            console.log(transactions)
+            showPagination(transactions, currentPage)
         })
     }catch(err){
         console.log(err)
