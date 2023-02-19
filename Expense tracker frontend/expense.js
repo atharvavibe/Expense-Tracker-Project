@@ -8,14 +8,14 @@ const description = document.getElementById('description')
 const expense = document.getElementById('expense')
 const pagination = document.getElementById('pagination')
 const token = localStorage.getItem('token')
-var numberOfRows = document.getElementById('rows')
-var rows = numberOfRows.options[numberOfRows.selectedIndex].value
+// var numberOfRows = document.getElementById('rows')
+// var rows = numberOfRows.options[numberOfRows.selectedIndex].value
 
 
 let transactions = []
 let currentPage = 1
 var id = 0
-const limit = rows
+const limit = 4
 // var currentPage = 1
 
 function download(){
@@ -71,7 +71,7 @@ function parseJwt (token) {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-    console.log(rows)
+    // console.log(rows)
     var page = 1
     var currentPage = 1
     const token = localStorage.getItem('token')

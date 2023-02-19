@@ -1,0 +1,2 @@
+::1 - - [19/Feb/2023:04:23:11 +0000] "POST /user/login HTTP/1.1" 201 251 "http://127.0.0.1:5500/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36"
+::1 - - [19/Feb/2023:04:23:13 +0000] "GET /expense/get-expense?page=1 HTTP/1.1" 304 - "http://127.0.0.1:5500/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36"
